@@ -1,0 +1,10 @@
+{
+  "_id": "siteSettings",
+  "_type": "settings",
+  "title": "Suite 24 Boutique",
+  "phone": "(516) 555-0124",
+  "email": "hello@suite24boutique.com",
+  "location": "Hempstead, NY",
+  "bookUrl": "#book",
+  "footerTagline": "Luxury. Hand-tied. Elevated."
+}

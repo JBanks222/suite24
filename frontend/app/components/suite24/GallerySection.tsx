@@ -1,22 +1,36 @@
 import Link from 'next/link'
 
 import BeforeAfterSlider from '@/app/components/suite24/BeforeAfterSlider'
-import {galleryImages} from '@/app/components/suite24/content'
+import type {HomepageContent} from '@/sanity/lib/homepage'
+import {dataAttr} from '@/sanity/lib/utils'
 
-export default function GallerySection() {
+type GallerySectionProps = {
+  content: HomepageContent['gallery']
+  documentId?: string
+}
+
+export default function GallerySection({content, documentId}: GallerySectionProps) {
   return (
-    <section id="gallery" className="bg-cream py-20 lg:py-28">
+    <section
+      id="gallery"
+      className="bg-cream py-20 lg:py-28"
+      data-sanity={
+        documentId
+          ? dataAttr({id: documentId, type: 'homepage', path: 'galleryHeading'}).toString()
+          : undefined
+      }
+    >
       <div className="container">
         <div className="mx-auto max-w-2xl text-center">
           <p className="font-sans text-[0.65rem] font-semibold uppercase tracking-[0.35em] text-forest/60">
-            Transformations
+            {content.eyebrow}
           </p>
           <h2 className="mt-3 font-serif text-3xl text-forest sm:text-4xl lg:text-5xl">
-            Real Hair. Real Results.
+            {content.heading}
           </h2>
         </div>
         <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5">
-          {galleryImages.map((image, index) => (
+          {content.items.map((image, index) => (
             <BeforeAfterSlider
               key={index}
               before={image.before}

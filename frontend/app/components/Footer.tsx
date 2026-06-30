@@ -2,7 +2,8 @@ import Link from 'next/link'
 
 import Logo from '@/app/components/suite24/Logo'
 import {SealIcon} from '@/app/components/suite24/Icons'
-import {navLinks, site} from '@/app/components/suite24/content'
+import {navLinks} from '@/app/components/suite24/content'
+import type {SiteSettings} from '@/sanity/lib/homepage'
 
 const infoLinks = [
   {label: 'About', href: '#about'},
@@ -11,30 +12,36 @@ const infoLinks = [
   {label: 'FAQ', href: '#'},
 ] as const
 
-const socialLinks = [
-  {label: 'Instagram', href: '#'},
-  {label: 'TikTok', href: '#'},
-  {label: 'Facebook', href: '#'},
-  {label: 'Pinterest', href: '#'},
-] as const
+const defaultSocial = [
+  {platform: 'Instagram', url: '#'},
+  {platform: 'TikTok', url: '#'},
+  {platform: 'Facebook', url: '#'},
+  {platform: 'Pinterest', url: '#'},
+]
 
-export default function Footer() {
+type FooterProps = {
+  settings: SiteSettings
+}
+
+export default function Footer({settings}: FooterProps) {
+  const socialLinks = settings.socialLinks.length ? settings.socialLinks : defaultSocial
+
   return (
     <footer className="bg-cream-dark">
       <div className="container py-16 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr_1fr_1fr_auto] lg:gap-8">
           <div>
             <Logo />
-            <p className="mt-4 font-script text-2xl text-gold">Luxury. Hand-tied. Elevated.</p>
+            <p className="mt-4 font-script text-2xl text-gold">{settings.footerTagline}</p>
             <div className="mt-6 flex gap-3">
               {socialLinks.map((social) => (
                 <a
-                  key={social.label}
-                  href={social.href}
-                  aria-label={social.label}
+                  key={social.platform}
+                  href={social.url}
+                  aria-label={social.platform}
                   className="flex h-9 w-9 items-center justify-center rounded-full border border-gold/40 text-gold transition-colors hover:bg-gold hover:text-forest"
                 >
-                  <span className="font-sans text-[0.6rem] font-bold">{social.label[0]}</span>
+                  <span className="font-sans text-[0.6rem] font-bold">{social.platform[0]}</span>
                 </a>
               ))}
             </div>
@@ -82,16 +89,16 @@ export default function Footer() {
             </p>
             <ul className="space-y-2 font-sans text-sm text-forest/80">
               <li>
-                <a href={`tel:${site.phone.replace(/\D/g, '')}`} className="hover:text-gold">
-                  {site.phone}
+                <a href={`tel:${settings.phone.replace(/\D/g, '')}`} className="hover:text-gold">
+                  {settings.phone}
                 </a>
               </li>
               <li>
-                <a href={`mailto:${site.email}`} className="hover:text-gold">
-                  {site.email}
+                <a href={`mailto:${settings.email}`} className="hover:text-gold">
+                  {settings.email}
                 </a>
               </li>
-              <li>{site.location}</li>
+              <li>{settings.location}</li>
               <li className="text-forest/60">By Appointment Only</li>
             </ul>
           </div>

@@ -5,9 +5,14 @@ import {useState} from 'react'
 
 import Button from '@/app/components/suite24/Button'
 import Logo from '@/app/components/suite24/Logo'
-import {navLinks, site} from '@/app/components/suite24/content'
+import {navLinks} from '@/app/components/suite24/content'
+import type {SiteSettings} from '@/sanity/lib/homepage'
 
-export default function Header() {
+type HeaderProps = {
+  settings: SiteSettings
+}
+
+export default function Header({settings}: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -28,7 +33,7 @@ export default function Header() {
         </nav>
 
         <div className="hidden lg:block">
-          <Button href={site.bookUrl} className="px-5 py-2.5 text-[0.6rem]">
+          <Button href={settings.bookUrl} className="px-5 py-2.5 text-[0.6rem]">
             Book Consultation
           </Button>
         </div>
@@ -65,7 +70,7 @@ export default function Header() {
               </li>
             ))}
             <li className="pt-2">
-              <Button href={site.bookUrl} className="w-full">
+              <Button href={settings.bookUrl} className="w-full">
                 Book Consultation
               </Button>
             </li>

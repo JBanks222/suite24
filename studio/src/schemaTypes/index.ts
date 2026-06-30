@@ -4,6 +4,14 @@ import {post} from './documents/post'
 import {callToAction} from './objects/callToAction'
 import {infoSection} from './objects/infoSection'
 import {settings} from './singletons/settings'
+import {homepage} from './singletons/homepage'
+import {
+  credentialItem,
+  serviceItem,
+  socialLink,
+  testimonialItem,
+  transformationItem,
+} from './objects/homepageObjects'
 import {link} from './objects/link'
 import {blockContent} from './objects/blockContent'
 import button from './objects/button'
@@ -14,6 +22,7 @@ import {blockContentTextOnly} from './objects/blockContentTextOnly'
 export const schemaTypes = [
   // Singletons
   settings,
+  homepage,
   // Documents
   page,
   post,
@@ -25,4 +34,9 @@ export const schemaTypes = [
   infoSection,
   callToAction,
   link,
+  serviceItem,
+  credentialItem,
+  testimonialItem,
+  transformationItem,
+  socialLink,
 ]

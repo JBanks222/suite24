@@ -2,27 +2,40 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import Button from '@/app/components/suite24/Button'
-import {site} from '@/app/components/suite24/content'
+import type {HomepageContent} from '@/sanity/lib/homepage'
+import {dataAttr} from '@/sanity/lib/utils'
 
-export default function HeroSection() {
+type HeroSectionProps = {
+  content: HomepageContent['hero']
+  bookUrl: string
+  documentId?: string
+}
+
+export default function HeroSection({content, bookUrl, documentId}: HeroSectionProps) {
   return (
-    <section className="grid min-h-[calc(100vh-5rem)] lg:grid-cols-2">
+    <section
+      className="grid min-h-[calc(100vh-5rem)] lg:grid-cols-2"
+      data-sanity={
+        documentId
+          ? dataAttr({id: documentId, type: 'homepage', path: 'heroHeading'}).toString()
+          : undefined
+      }
+    >
       <div className="flex flex-col justify-center bg-cream px-6 py-16 sm:px-12 lg:py-24">
         <p className="mb-6 font-sans text-[0.65rem] font-semibold uppercase tracking-[0.35em] text-forest/70">
-          Luxury. Intentional. Elevated.
+          {content.tagline}
         </p>
         <h1 className="font-serif text-4xl leading-[1.1] text-forest sm:text-5xl lg:text-[3.25rem]">
-          Luxury Hand-Tied Extensions{' '}
+          {content.heading}{' '}
           <span className="block font-script text-5xl font-normal text-gold sm:text-6xl lg:text-7xl">
-            &amp; Lived-In Color
+            {content.headingAccent}
           </span>
         </h1>
         <p className="mt-6 max-w-md font-sans text-sm leading-relaxed text-forest/80 sm:text-base">
-          Specializing in IBE® Hand-Tied Extensions and custom color for seamless, natural results
-          that elevate your everyday.
+          {content.description}
         </p>
         <div className="mt-10 flex flex-wrap items-center gap-6">
-          <Button href={site.bookUrl}>Book Consultation</Button>
+          <Button href={bookUrl}>Book Consultation</Button>
           <Link
             href="#gallery"
             className="group inline-flex items-center gap-2 font-sans text-xs font-semibold uppercase tracking-[0.15em] text-forest transition-colors hover:text-gold"
@@ -34,7 +47,7 @@ export default function HeroSection() {
       </div>
       <div className="relative min-h-[50vh] lg:min-h-full">
         <Image
-          src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=900&h=1200&fit=crop"
+          src={content.imageUrl}
           alt="Stylist working on client hair in Suite 24 Boutique studio"
           fill
           className="object-cover"

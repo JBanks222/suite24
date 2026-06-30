@@ -26,6 +26,17 @@ export function resolveOpenGraphImage(
   return {url, alt: (image as {alt?: string})?.alt || '', width, height}
 }
 
+export function getImageUrl(
+  image?: SanityImageSource | null,
+  width = 1200,
+  height?: number,
+) {
+  if (!image) return null
+  let builder = urlForImage(image).width(width)
+  if (height) builder = builder.height(height).fit('crop')
+  return builder.url() ?? null
+}
+
 // Depending on the type of link, we need to fetch the corresponding page, post, or URL.  Otherwise return null.
 export function linkResolver(link: Link | DereferencedLink | undefined) {
   if (!link) return null

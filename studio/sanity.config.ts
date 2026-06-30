@@ -47,7 +47,7 @@ function resolveHref(documentType?: string, slug?: string): string | undefined {
 // Main Sanity configuration
 export default defineConfig({
   name: 'default',
-  title: 'Sanity + Next.js Starter Template',
+  title: 'Suite 24 Boutique',
 
   projectId,
   dataset,
@@ -66,7 +66,7 @@ export default defineConfig({
         mainDocuments: defineDocuments([
           {
             route: '/',
-            filter: `_type == "settings" && _id == "siteSettings"`,
+            filter: `_type == "homepage" && _id == "homepage"`,
           },
           {
             route: '/:slug',
@@ -79,6 +79,11 @@ export default defineConfig({
         ]),
         // Locations Resolver API allows you to define where data is being used in your application. https://www.sanity.io/docs/visual-editing/presentation-resolver-api#8d8bca7bfcd7
         locations: {
+          homepage: defineLocations({
+            locations: [homeLocation],
+            message: 'This document controls the homepage',
+            tone: 'positive',
+          }),
           settings: defineLocations({
             locations: [homeLocation],
             message: 'This document is used on all pages',

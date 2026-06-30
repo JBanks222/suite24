@@ -15,6 +15,55 @@
 export declare const internalGroqTypeReferenceTo: unique symbol
 
 // Source: ../sanity.schema.json
+export type SocialLink = {
+  _type: 'socialLink'
+  platform: 'Instagram' | 'TikTok' | 'Facebook' | 'Pinterest'
+  url: string
+}
+
+export type SanityImageAssetReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+}
+
+export type TransformationItem = {
+  _type: 'transformationItem'
+  beforeImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  afterImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+}
+
+export type TestimonialItem = {
+  _type: 'testimonialItem'
+  quote: string
+  authorName: string
+}
+
+export type CredentialItem = {
+  _type: 'credentialItem'
+  title: string
+  description: string
+}
+
+export type ServiceItem = {
+  _type: 'serviceItem'
+  title: string
+  description: string
+}
+
 export type PageReference = {
   _ref: string
   _type: 'reference'
@@ -36,13 +85,6 @@ export type Link = {
   page?: PageReference
   post?: PostReference
   openInNewTab?: boolean
-}
-
-export type SanityImageAssetReference = {
-  _ref: string
-  _type: 'reference'
-  _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
 }
 
 export type CallToAction = {
@@ -127,6 +169,81 @@ export type Button = {
   link?: Link
 }
 
+export type Homepage = {
+  _id: string
+  _type: 'homepage'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  heroTagline?: string
+  heroHeading?: string
+  heroHeadingAccent?: string
+  heroDescription?: string
+  heroImage?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  aboutEyebrow?: string
+  aboutHeading?: string
+  aboutSubtitle?: string
+  aboutBio?: string
+  aboutSignature?: string
+  aboutPortrait?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  credentials?: Array<
+    {
+      _key: string
+    } & CredentialItem
+  >
+  servicesEyebrow?: string
+  servicesHeading?: string
+  services?: Array<
+    {
+      _key: string
+    } & ServiceItem
+  >
+  galleryEyebrow?: string
+  galleryHeading?: string
+  transformations?: Array<
+    {
+      _key: string
+    } & TransformationItem
+  >
+  testimonialsEyebrow?: string
+  testimonialsHeading?: string
+  testimonials?: Array<
+    {
+      _key: string
+    } & TestimonialItem
+  >
+  bookCtaHeading?: string
+  bookCtaDescription?: string
+}
+
+export type SanityImageCrop = {
+  _type: 'sanity.imageCrop'
+  top: number
+  bottom: number
+  left: number
+  right: number
+}
+
+export type SanityImageHotspot = {
+  _type: 'sanity.imageHotspot'
+  x: number
+  y: number
+  height: number
+  width: number
+}
+
 export type Settings = {
   _id: string
   _type: 'settings'
@@ -134,6 +251,16 @@ export type Settings = {
   _updatedAt: string
   _rev: string
   title: string
+  phone?: string
+  email?: string
+  location?: string
+  bookUrl?: string
+  footerTagline?: string
+  socialLinks?: Array<
+    {
+      _key: string
+    } & SocialLink
+  >
   description?: Array<{
     children?: Array<{
       marks?: Array<string>
@@ -165,22 +292,6 @@ export type Settings = {
     metadataBase?: string
     _type: 'image'
   }
-}
-
-export type SanityImageCrop = {
-  _type: 'sanity.imageCrop'
-  top: number
-  bottom: number
-  left: number
-  right: number
-}
-
-export type SanityImageHotspot = {
-  _type: 'sanity.imageHotspot'
-  x: number
-  y: number
-  height: number
-  width: number
 }
 
 export type Page = {
@@ -491,18 +602,24 @@ export type Geopoint = {
 }
 
 export type AllSanitySchemaTypes =
+  | SocialLink
+  | SanityImageAssetReference
+  | TransformationItem
+  | TestimonialItem
+  | CredentialItem
+  | ServiceItem
   | PageReference
   | PostReference
   | Link
-  | SanityImageAssetReference
   | CallToAction
   | InfoSection
   | BlockContentTextOnly
   | BlockContent
   | Button
-  | Settings
+  | Homepage
   | SanityImageCrop
   | SanityImageHotspot
+  | Settings
   | Page
   | PersonReference
   | Post
@@ -532,15 +649,21 @@ export type AllSanitySchemaTypes =
 
 // Source: sanity/lib/queries.ts
 // Variable: settingsQuery
-// Query: *[_type == "settings"][0]
+// Query: *[_type == "settings"][0]{  _id,  title,  phone,  email,  location,  bookUrl,  footerTagline,  socialLinks,  description,  ogImage}
 export type SettingsQueryResult = {
   _id: string
-  _type: 'settings'
-  _createdAt: string
-  _updatedAt: string
-  _rev: string
   title: string
-  description?: Array<{
+  phone: string | null
+  email: string | null
+  location: string | null
+  bookUrl: string | null
+  footerTagline: string | null
+  socialLinks: Array<
+    {
+      _key: string
+    } & SocialLink
+  > | null
+  description: Array<{
     children?: Array<{
       marks?: Array<string>
       text?: string
@@ -561,8 +684,8 @@ export type SettingsQueryResult = {
     level?: number
     _type: 'block'
     _key: string
-  }>
-  ogImage?: {
+  }> | null
+  ogImage: {
     asset?: SanityImageAssetReference
     media?: unknown
     hotspot?: SanityImageHotspot
@@ -570,7 +693,73 @@ export type SettingsQueryResult = {
     alt?: string
     metadataBase?: string
     _type: 'image'
-  }
+  } | null
+} | null
+
+// Source: sanity/lib/queries.ts
+// Variable: homepageQuery
+// Query: *[_type == "homepage"][0]{  _id,  heroTagline,  heroHeading,  heroHeadingAccent,  heroDescription,  heroImage,  aboutEyebrow,  aboutHeading,  aboutSubtitle,  aboutBio,  aboutSignature,  aboutPortrait,  credentials[]{title, description},  servicesEyebrow,  servicesHeading,  services[]{title, description},  galleryEyebrow,  galleryHeading,  transformations[]{    beforeImage,    afterImage  },  testimonialsEyebrow,  testimonialsHeading,  testimonials[]{quote, authorName},  bookCtaHeading,  bookCtaDescription}
+export type HomepageQueryResult = {
+  _id: string
+  heroTagline: string | null
+  heroHeading: string | null
+  heroHeadingAccent: string | null
+  heroDescription: string | null
+  heroImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  } | null
+  aboutEyebrow: string | null
+  aboutHeading: string | null
+  aboutSubtitle: string | null
+  aboutBio: string | null
+  aboutSignature: string | null
+  aboutPortrait: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  } | null
+  credentials: Array<{
+    title: string
+    description: string
+  }> | null
+  servicesEyebrow: string | null
+  servicesHeading: string | null
+  services: Array<{
+    title: string
+    description: string
+  }> | null
+  galleryEyebrow: string | null
+  galleryHeading: string | null
+  transformations: Array<{
+    beforeImage: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: 'image'
+    }
+    afterImage: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: 'image'
+    }
+  }> | null
+  testimonialsEyebrow: string | null
+  testimonialsHeading: string | null
+  testimonials: Array<{
+    quote: string
+    authorName: string
+  }> | null
+  bookCtaHeading: string | null
+  bookCtaDescription: string | null
 } | null
 
 // Source: sanity/lib/queries.ts
@@ -817,7 +1006,8 @@ export type PagesSlugsResult = Array<{
 import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
-    '*[_type == "settings"][0]': SettingsQueryResult
+    '*[_type == "settings"][0]{\n  _id,\n  title,\n  phone,\n  email,\n  location,\n  bookUrl,\n  footerTagline,\n  socialLinks,\n  description,\n  ogImage\n}': SettingsQueryResult
+    '*[_type == "homepage"][0]{\n  _id,\n  heroTagline,\n  heroHeading,\n  heroHeadingAccent,\n  heroDescription,\n  heroImage,\n  aboutEyebrow,\n  aboutHeading,\n  aboutSubtitle,\n  aboutBio,\n  aboutSignature,\n  aboutPortrait,\n  credentials[]{title, description},\n  servicesEyebrow,\n  servicesHeading,\n  services[]{title, description},\n  galleryEyebrow,\n  galleryHeading,\n  transformations[]{\n    beforeImage,\n    afterImage\n  },\n  testimonialsEyebrow,\n  testimonialsHeading,\n  testimonials[]{quote, authorName},\n  bookCtaHeading,\n  bookCtaDescription\n}': HomepageQueryResult
     '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        ...,\n        button {\n          ...,\n          \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n      }\n\n        }\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n': GetPageQueryResult
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': AllPostsQueryResult

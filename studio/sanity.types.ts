@@ -15,6 +15,55 @@
 export declare const internalGroqTypeReferenceTo: unique symbol
 
 // Source: ../sanity.schema.json
+export type SocialLink = {
+  _type: 'socialLink'
+  platform: 'Instagram' | 'TikTok' | 'Facebook' | 'Pinterest'
+  url: string
+}
+
+export type SanityImageAssetReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+}
+
+export type TransformationItem = {
+  _type: 'transformationItem'
+  beforeImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  afterImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+}
+
+export type TestimonialItem = {
+  _type: 'testimonialItem'
+  quote: string
+  authorName: string
+}
+
+export type CredentialItem = {
+  _type: 'credentialItem'
+  title: string
+  description: string
+}
+
+export type ServiceItem = {
+  _type: 'serviceItem'
+  title: string
+  description: string
+}
+
 export type PageReference = {
   _ref: string
   _type: 'reference'
@@ -36,13 +85,6 @@ export type Link = {
   page?: PageReference
   post?: PostReference
   openInNewTab?: boolean
-}
-
-export type SanityImageAssetReference = {
-  _ref: string
-  _type: 'reference'
-  _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
 }
 
 export type CallToAction = {
@@ -127,6 +169,81 @@ export type Button = {
   link?: Link
 }
 
+export type Homepage = {
+  _id: string
+  _type: 'homepage'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  heroTagline?: string
+  heroHeading?: string
+  heroHeadingAccent?: string
+  heroDescription?: string
+  heroImage?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  aboutEyebrow?: string
+  aboutHeading?: string
+  aboutSubtitle?: string
+  aboutBio?: string
+  aboutSignature?: string
+  aboutPortrait?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  credentials?: Array<
+    {
+      _key: string
+    } & CredentialItem
+  >
+  servicesEyebrow?: string
+  servicesHeading?: string
+  services?: Array<
+    {
+      _key: string
+    } & ServiceItem
+  >
+  galleryEyebrow?: string
+  galleryHeading?: string
+  transformations?: Array<
+    {
+      _key: string
+    } & TransformationItem
+  >
+  testimonialsEyebrow?: string
+  testimonialsHeading?: string
+  testimonials?: Array<
+    {
+      _key: string
+    } & TestimonialItem
+  >
+  bookCtaHeading?: string
+  bookCtaDescription?: string
+}
+
+export type SanityImageCrop = {
+  _type: 'sanity.imageCrop'
+  top: number
+  bottom: number
+  left: number
+  right: number
+}
+
+export type SanityImageHotspot = {
+  _type: 'sanity.imageHotspot'
+  x: number
+  y: number
+  height: number
+  width: number
+}
+
 export type Settings = {
   _id: string
   _type: 'settings'
@@ -134,6 +251,16 @@ export type Settings = {
   _updatedAt: string
   _rev: string
   title: string
+  phone?: string
+  email?: string
+  location?: string
+  bookUrl?: string
+  footerTagline?: string
+  socialLinks?: Array<
+    {
+      _key: string
+    } & SocialLink
+  >
   description?: Array<{
     children?: Array<{
       marks?: Array<string>
@@ -165,22 +292,6 @@ export type Settings = {
     metadataBase?: string
     _type: 'image'
   }
-}
-
-export type SanityImageCrop = {
-  _type: 'sanity.imageCrop'
-  top: number
-  bottom: number
-  left: number
-  right: number
-}
-
-export type SanityImageHotspot = {
-  _type: 'sanity.imageHotspot'
-  x: number
-  y: number
-  height: number
-  width: number
 }
 
 export type Page = {
@@ -491,18 +602,24 @@ export type Geopoint = {
 }
 
 export type AllSanitySchemaTypes =
+  | SocialLink
+  | SanityImageAssetReference
+  | TransformationItem
+  | TestimonialItem
+  | CredentialItem
+  | ServiceItem
   | PageReference
   | PostReference
   | Link
-  | SanityImageAssetReference
   | CallToAction
   | InfoSection
   | BlockContentTextOnly
   | BlockContent
   | Button
-  | Settings
+  | Homepage
   | SanityImageCrop
   | SanityImageHotspot
+  | Settings
   | Page
   | PersonReference
   | Post

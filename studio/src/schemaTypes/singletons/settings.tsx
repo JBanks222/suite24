@@ -17,16 +17,53 @@ export const settings = defineType({
   fields: [
     defineField({
       name: 'title',
-      description: 'This field is the title of your blog.',
-      title: 'Title',
+      description: 'Site name shown in the browser tab and header.',
+      title: 'Site title',
       type: 'string',
-      initialValue: demo.title,
+      initialValue: 'Suite 24 Boutique',
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'phone',
+      title: 'Phone number',
+      type: 'string',
+      initialValue: '(516) 555-0124',
+    }),
+    defineField({
+      name: 'email',
+      title: 'Email address',
+      type: 'string',
+      initialValue: 'hello@suite24boutique.com',
+    }),
+    defineField({
+      name: 'location',
+      title: 'Location',
+      type: 'string',
+      initialValue: 'Hempstead, NY',
+    }),
+    defineField({
+      name: 'bookUrl',
+      title: 'Booking URL',
+      description: 'Link for all “Book Consultation” buttons (e.g. your booking page or #book).',
+      type: 'string',
+      initialValue: '#book',
+    }),
+    defineField({
+      name: 'footerTagline',
+      title: 'Footer tagline',
+      type: 'string',
+      initialValue: 'Luxury. Hand-tied. Elevated.',
+    }),
+    defineField({
+      name: 'socialLinks',
+      title: 'Social links',
+      type: 'array',
+      of: [{type: 'socialLink'}],
+    }),
+    defineField({
       name: 'description',
-      description: 'Used on the Homepage',
-      title: 'Description',
+      description: 'Used for SEO meta description.',
+      title: 'SEO description',
       type: 'array',
       initialValue: demo.description,
       of: [
