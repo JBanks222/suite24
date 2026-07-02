@@ -1,4 +1,5 @@
 import type {HomepageQueryResult, SettingsQueryResult} from '@/sanity.types'
+import {stegaClean} from '@sanity/client/stega'
 import {
   credentials as defaultCredentials,
   galleryImages as defaultGallery,
@@ -63,15 +64,15 @@ export type HomepageContent = {
 
 export function resolveSiteSettings(settings: SettingsQueryResult | null): SiteSettings {
   return {
-    bookUrl: settings?.bookUrl || defaultSite.bookUrl,
-    phone: settings?.phone || defaultSite.phone,
-    email: settings?.email || defaultSite.email,
-    location: settings?.location || defaultSite.location,
-    footerTagline: settings?.footerTagline || 'Luxury. Hand-tied. Elevated.',
+    bookUrl: stegaClean(settings?.bookUrl || defaultSite.bookUrl),
+    phone: stegaClean(settings?.phone || defaultSite.phone),
+    email: stegaClean(settings?.email || defaultSite.email),
+    location: stegaClean(settings?.location || defaultSite.location),
+    footerTagline: stegaClean(settings?.footerTagline || 'Luxury. Hand-tied. Elevated.'),
     socialLinks:
       settings?.socialLinks?.filter((link) => link?.platform && link?.url).map((link) => ({
-        platform: link.platform!,
-        url: link.url!,
+        platform: stegaClean(link.platform!),
+        url: stegaClean(link.url!),
       })) ?? [],
   }
 }

@@ -1,6 +1,7 @@
 import {Link} from '@/sanity.types'
 import {dataset, projectId, studioUrl} from '@/sanity/lib/api'
 import {createDataAttribute, CreateDataAttributeProps} from 'next-sanity'
+import {stegaClean} from '@sanity/client/stega'
 import {createImageUrlBuilder, type SanityImageSource} from '@sanity/image-url'
 import {DereferencedLink} from '@/sanity/lib/types'
 
@@ -42,20 +43,25 @@ export function linkResolver(link: Link | DereferencedLink | undefined) {
   if (!link) return null
 
   // If linkType is not set but href is, lets set linkType to "href".  This comes into play when pasting links into the portable text editor because a link type is not assumed.
-  if (!link.linkType && link.href) {
-    link.linkType = 'href'
+  let linkType = stegaClean(link.linkType)
+  const href = stegaClean(link.href)
+  const page = stegaClean(link.page)
+  const post = stegaClean(link.post)
+
+  if (!linkType && href) {
+    linkType = 'href'
   }
 
-  switch (link.linkType) {
+  switch (linkType) {
     case 'href':
-      return link.href || null
+      return href || null
     case 'page':
-      if (link?.page && typeof link.page === 'string') {
-        return `/${link.page}`
+      if (page && typeof page === 'string') {
+        return `/${page}`
       }
     case 'post':
-      if (link?.post && typeof link.post === 'string') {
-        return `/posts/${link.post}`
+      if (post && typeof post === 'string') {
+        return `/posts/${post}`
       }
     default:
       return null
